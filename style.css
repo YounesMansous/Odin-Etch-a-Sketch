@@ -30,9 +30,10 @@ h1{
 }
 
 .frame{
+  display: flex;
     box-shadow: 0px 5px 20px grey;
-    height: 100%;
-    width: 45%;
+    height: 512px;
+    width: 512px;
     margin: 0;
 }
 

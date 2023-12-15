@@ -7,6 +7,7 @@ body.appendChild(title);
 let content = document.createElement("div");
 let frame = document.createElement("div");
 let menu = document.createElement("div");
+let grid_size = 20
 menu.classList = "menu";
 frame.classList = "frame";
 content.appendChild(menu);
@@ -19,6 +20,8 @@ colorPicker.type = "color";
 colorPicker.value = "#000000";
 colorPicker.classList = "colorpicker";
 menu.appendChild(colorPicker);
+
+let color = colorPicker.value;
 
 let button1 = document.createElement("button");
 let button2 = document.createElement("button");
@@ -52,9 +55,26 @@ slider.max = 64;
 size.textContent = slider.value + "x" + slider.value;
 slider.addEventListener('input', function() {
     size.textContent = slider.value + "x" + slider.value;
-    console.log(slider.value);
+    grid_size = parseInt(size.textContent)
+    cells();
   }, false);
 
+
+  button4.addEventListener('click', function() {
+    cells();
+  });
+
+  button3.addEventListener('click', function() {
+    color = colorPicker.value;
+    colorPicker.value = "#ffffff";
+  });
+
+  button1.addEventListener('click', function() {
+    colorPicker.value = color;
+  });
+
+let rows = "";
+let columns = "";
 
 resize.appendChild(size);
 resize.appendChild(slider);
@@ -64,6 +84,40 @@ menu.appendChild(button2);
 menu.appendChild(button3);
 menu.appendChild(button4);
 menu.appendChild(resize);
+
+frame.style.display = "grid";
+frame.style.margin = "auto";
+frame.style.gridTemplateColumns = /*"repeat(" + grid_size + ", " + grid_size + "px);"*/ "32px 32px 32px 32px";
+frame.style.gridTemplateRows = /*"repeat(" + grid_size +", " + grid_size + "px);"*/ "repeat(16, 32px);";
+function cells(){
+  rows = "";
+  columns = "";
+  while (frame.firstChild) {
+    frame.removeChild(frame.lastChild);
+  }
+  for (let i = 0; i < grid_size * grid_size; i++) {
+    let cell = document.createElement("div");
+    cell.classList = "cell";
+    cell.style.width = 100 +'% ';
+    cell.style.height = 100 +'% ';
+    //cell.style.backgroundColor = "red";
+    frame.appendChild(cell);
+    if( i < grid_size){
+      columns += 100/grid_size +'% ';
+      rows += 100/grid_size +'% ';
+    }
+    cell.setAttribute("onmousemove", "selected(this)");
+    //cell.onclick = selected(this);
+  }
+  frame.style.gridTemplateColumns = columns;
+  frame.style.gridTemplateRows = rows;
+}
+
+function selected(item) {
+  item.style.backgroundColor = colorPicker.value;
+}
+
+cells();
 
 
 
